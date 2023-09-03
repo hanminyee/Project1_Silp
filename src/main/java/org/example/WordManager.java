@@ -29,10 +29,9 @@ public class WordManager {
             if(menu == 4){
                 wordCRUD.addWord();
             }
-            else if(menu == 1){
-                //menu
+            else if(menu == 1) {
+                wordCRUD.listAll();
             }
-            System.out.println(menu);
         }
 
     }
