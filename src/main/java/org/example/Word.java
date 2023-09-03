@@ -1,6 +1,6 @@
 package org.example;
 
-public class word {
+public class Word {
     private int id;
     private int level;
     private String word;
@@ -13,6 +13,7 @@ public class word {
         this.word = word;
         this.meaning = meaning;
     }
+
 
     public int getId() {
         return id;
