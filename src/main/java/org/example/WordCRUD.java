@@ -1,10 +1,12 @@
 package org.example;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.*;
 
 public class WordCRUD implements ICRUD_interface{
     ArrayList<Word> list;
     Scanner s;
+    final String fname = "Dictionary.txt";
 
     WordCRUD(Scanner s){
         list = new ArrayList<>();
@@ -18,6 +20,12 @@ public class WordCRUD implements ICRUD_interface{
         System.out.print("뜻 입력 : ");
         String meaning = s.nextLine();
         return new Word(0, level, word, meaning);
+    }
+
+    public void searchWord(){ // (3) 단어 검색
+        System.out.print("=> 검색할 단어 입력 : ");
+        String keyword = s.next();
+        listAll(keyword);
     }
 
     public void addItem(){
@@ -47,6 +55,22 @@ public class WordCRUD implements ICRUD_interface{
             System.out.println(list.get(i).toString());
         }
         System.out.println("------------------------------");
+    }
+
+    public void listAll(int level){ // for searchLevel()
+        System.out.println("-------------------------------") ;
+        for(int i = 0 ; i < list.size(); i++){
+            int ilevel = list.get(i).getLevel();
+            if(ilevel != level) continue;
+            System.out.print(i+1 + " ");
+            System.out.println(list.get(i).toString());
+        }
+        System.out.println("-------------------------------") ;
+    }
+    public void searchLevel(){ // (2) 수준별 단어 보기
+        System.out.print("=> 보고 싶은 레벨은? ");
+        int l = s.nextInt();
+        listAll(l);
     }
 
     public ArrayList<Integer> listAll(String keyword){
@@ -92,6 +116,44 @@ public class WordCRUD implements ICRUD_interface{
             System.out.println("단어가 삭제되었습니다. ");
         } else{
             System.out.println("취소되었습니다. ");
+        }
+    }
+
+    public void loadFile(){
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(fname));
+            String line;
+            int count = 0;
+
+            while(true){
+                line = br.readLine();
+                if(line == null) break;
+
+                String[] data = line.split("\\|"); // 이렇게 해야 인식이 됨
+                int level = Integer.parseInt(data[0]);
+                String word = data[1];
+                String meaning = data[2];
+
+                list.add(new Word(0, level, word, meaning));
+                count++;
+            }
+            br.close();
+            System.out.println("==> " + count + "개 로딩 완료");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveFile(){ // (7) 파일 저장
+        try{
+            PrintWriter pr = new PrintWriter(new FileWriter("test.txt"));
+            for (Word one: list) {
+                pr.write(one.toFileString() + "\n");
+            }
+            pr.close();
+            System.out.println("==> 데이터 저장 완료");
+        } catch (IOException e){
+            e.printStackTrace();
         }
     }
 

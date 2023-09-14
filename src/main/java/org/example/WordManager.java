@@ -23,6 +23,7 @@ public class WordManager {
         return s.nextInt();
     }
     public void start(){
+        wordCRUD.loadFile();
         while(true){
             int menu = selectMenu();
             if (menu == 0) {
@@ -33,10 +34,10 @@ public class WordManager {
                 wordCRUD.listAll();
             }
             else if(menu == 2) {
-                wordCRUD.listAll();
+                wordCRUD.searchLevel();
             }
             else if(menu == 3) {
-                wordCRUD.listAll();
+                wordCRUD.searchWord();
             }
             else if(menu == 4){
                 wordCRUD.addItem();
@@ -48,9 +49,11 @@ public class WordManager {
                 wordCRUD.deleteItem();
             }
             else if(menu == 7) {
-                wordCRUD.listAll();
+                wordCRUD.saveFile();
             }
-
+            else{
+                System.out.println("가능한 메뉴만 입력해주세요");
+            }
         }
 
     }
